@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SENSATION CALC</title>
+</head>
+
+<style>
+    .container {
+        max-width: 350px;
+        background: #F8F9FD;
+        background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
+        border-radius: 40px;
+        padding: 25px 35px;
+        border: 5px solid rgb(255, 255, 255);
+        box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
+        margin: 20px;
+      }
+      
+      .heading {
+        text-align: center;
+        font-weight: 900;
+        font-size: 30px;
+        color: rgb(16, 137, 211);
+      }
+      
+      .form {
+        margin-top: 20px;
+      }
+      
+      .form .input {
+        width: 100%;
+        background: white;
+        border: none;
+        padding: 15px 20px;
+        border-radius: 20px;
+        margin-top: 15px;
+        box-shadow: #cff0ff 0px 10px 10px -5px;
+        border-inline: 2px solid transparent;
+      }
+      
+      .form .input::-moz-placeholder {
+        color: rgb(170, 170, 170);
+      }
+      
+      .form .input::placeholder {
+        color: rgb(170, 170, 170);
+      }
+      
+      .form .input:focus {
+        outline: none;
+        border-inline: 2px solid #12B1D1;
+      }
+      
+      .form .forgot-password {
+        display: block;
+        margin-top: 10px;
+        margin-left: 10px;
+      }
+      
+      .form .forgot-password a {
+        font-size: 11px;
+        color: #0099ff;
+        text-decoration: none;
+      }
+      
+      .form .login-button {
+        display: block;
+        width: 100%;
+        font-weight: bold;
+        background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+        color: white;
+        padding-block: 15px;
+        margin: 20px auto;
+        border-radius: 20px;
+        box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 20px 10px -15px;
+        border: none;
+        transition: all 0.2s ease-in-out;
+      }
+      
+      .form .login-button:hover {
+        transform: scale(1.03);
+        box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 23px 10px -20px;
+      }
+      
+      .form .login-button:active {
+        transform: scale(0.95);
+        box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 15px 10px -10px;
+      }
+      
+      .social-account-container {
+        margin-top: 25px;
+      }
+      
+      .social-account-container .title {
+        display: block;
+        text-align: center;
+        font-size: 10px;
+        color: rgb(170, 170, 170);
+      }
+      
+      .social-account-container .social-accounts {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 5px;
+      }
+      
+      .social-account-container .social-accounts .social-button {
+        background: linear-gradient(45deg, rgb(0, 0, 0) 0%, rgb(112, 112, 112) 100%);
+        border: 5px solid white;
+        padding: 5px;
+        border-radius: 50%;
+        width: 40px;
+        aspect-ratio: 1;
+        display: grid;
+        place-content: center;
+        box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 12px 10px -8px;
+        transition: all 0.2s ease-in-out;
+      }
+      
+      .social-account-container .social-accounts .social-button .svg {
+        fill: white;
+        margin: auto;
+      }
+      
+      .social-account-container .social-accounts .social-button:hover {
+        transform: scale(1.2);
+      }
+      
+      .social-account-container .social-accounts .social-button:active {
+        transform: scale(0.9);
+      }
+      
+      .agreement {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+      }
+      
+      .agreement a {
+        text-decoration: none;
+        color: #0099ff;
+        font-size: 9px;
+      }
+</style>
+<body>
+    <div class="container">
+        <div class="heading">SENSATION CALC</div>
+        <form action="" class="form" onsubmit="calculate(event)">
+            <input required class="input" type="text" id="count" placeholder="인원 수">
+            <input required class="input" type="text" id="amount" placeholder="금액">
+
+            <!-- Radio buttons for selecting income type -->
+            <div style="display: flex; width: 100%; justify-content: center; align-items: center; margin-top: 10px">
+                <label><input type="radio" name="incomeType" value="3.3" checked> <span style="font-size: 12px;">사업소득 (3.3%)</span></label>
+            </div>
+            <div style="display: flex; width: 100%; justify-content: center; align-items: center;">
+            <label><input type="radio" name="incomeType" value="8.8"> <span style="font-size: 12px;">기타소득 (8.8%)</span></label>
+        </div>
+
+            <input required class="input" type="text" id="susu" placeholder="수수료" disabled>
+            <input required class="input" type="text" id="totalAmount" placeholder="금액" disabled>
+            <input class="login-button" type="submit" value="계산">
+        </form>
+    </div>
+
+    <script>
+        function parseCurrency(value) {
+            return Number(value.replace(/[^0-9.-]+/g,""));
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(value);
+        }
+
+        function calculate(event) {
+            event.preventDefault(); // Form의 기본 제출 방지
+
+            const count = parseInt(document.getElementById("count").value.replace(/[^0-9]/g, ""));
+            const amount = parseCurrency(document.getElementById("amount").value);
+
+            // 선택한 소득 유형의 비율 가져오기
+            const incomeTypeRate = parseFloat(document.querySelector('input[name="incomeType"]:checked').value);
+
+            // 소득 비율에 따른 금액 계산하여 susu에 설정
+            const susuAmount = amount * (incomeTypeRate / 100);
+            document.getElementById("susu").value = formatCurrency(susuAmount);
+
+            // 총 금액에서 susu를 빼고 인원 수로 나눈 값을 totalAmount에 설정
+            const totalPerPerson = (amount - susuAmount) / count;
+            document.getElementById("totalAmount").value = formatCurrency(totalPerPerson);
+        }
+    </script>
+</body>
+</html>
